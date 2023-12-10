@@ -1,5 +1,7 @@
 package hcmute.ALOHCMUTE;
 
+import java.io.IOException;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,14 +17,16 @@ import hcmute.ALOHCMUTE.services.IStorageService;
 @EnableConfigurationProperties(StorageProperties.class)
 public class AlohcmuteApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		
 		SpringApplication.run(AlohcmuteApplication.class, args);
 	}
+	
 	@Bean
 	public FilterRegistrationBean<CustomSiteMeshFilter> siteMeshFilter(){
 		
 		FilterRegistrationBean<CustomSiteMeshFilter> filterRegistrationBean = new FilterRegistrationBean<CustomSiteMeshFilter>();
-		filterRegistrationBean.setFilter(new CustomSiteMeshFilter()); // adding sitemesh filter ??
+		filterRegistrationBean.setFilter(new CustomSiteMeshFilter());
 		filterRegistrationBean.addUrlPatterns("/*");
 		return filterRegistrationBean;
 	}
@@ -33,4 +37,5 @@ public class AlohcmuteApplication {
 			storageService.init();
 		});
 	}
+	
 }

@@ -24,7 +24,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.cloud.storage.Blob;
+import com.google.firebase.cloud.StorageClient;
 
 import hcmute.ALOHCMUTE.entity.Post;
 import hcmute.ALOHCMUTE.entity.User;
@@ -193,7 +197,6 @@ public class PostController {
 		model.addAttribute("message", message);
 		return new ModelAndView("redirect:/posts/post?userid=" + userId, model);
 	}
-	
 	
 	@GetMapping("/images/{filename:.+}")
 	@ResponseBody

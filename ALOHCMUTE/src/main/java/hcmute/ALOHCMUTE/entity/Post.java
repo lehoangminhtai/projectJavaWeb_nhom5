@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -61,7 +62,7 @@ public class Post implements Serializable{
 	private Date postDate;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "postid", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "postid", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Likes> likePost;
 
 	@Override
