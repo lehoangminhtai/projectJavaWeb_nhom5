@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -54,15 +55,15 @@ public class User implements Serializable {
 	private UserInfo userinfo;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "userid", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "userid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<UserRela> userRela;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "userid", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "userid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Post> postid;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "userid", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "userid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Likes> likes;
 
 	@Override

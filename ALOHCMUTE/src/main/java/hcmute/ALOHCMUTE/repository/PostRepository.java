@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import hcmute.ALOHCMUTE.entity.Comments;
 import hcmute.ALOHCMUTE.entity.Post;
 
-
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query("SELECT c FROM Comments c WHERE c.postid = :postid ORDER BY c.cmtDate DESC")

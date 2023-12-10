@@ -39,7 +39,7 @@
 						<input type="hidden" name="isEdit" value="${cmtModel.isEdit}">
 						<input type="hidden" name="userid" value="${user}">
 						<input type="hidden" name="postid" value="${post.postid}">
-						<input type="hidden" name="cmtDate" value="${cmtModel.cmtDate}">
+<%-- 						<input type="hidden" name="cmtDate" value="${cmtModel.cmtDate}"> --%>
 						<div class="form-group d-flex align-items-center">
 							<input type="text" value = "${cmtModel.content}" class="form-control" id="content"
 							 name="content" placeholder="Nhập bình luận" required>
