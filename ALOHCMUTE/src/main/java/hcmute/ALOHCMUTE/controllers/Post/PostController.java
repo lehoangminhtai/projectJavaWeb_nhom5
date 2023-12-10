@@ -144,35 +144,73 @@ public class PostController {
 		return new ModelAndView("forward:/posts/post", model);
 	}
 	
+//	@PostMapping("cmtSave")
+//	public ModelAndView cmtSave(ModelMap model, @Valid @ModelAttribute("cmtModel") CommentModel cmtModel, BindingResult result) {
+//		
+//		if(result.hasErrors()) {
+//			return new ModelAndView("admin/post/Comment");
+//		}
+//		Comments entity = new Comments();
+//		BeanUtils.copyProperties(cmtModel, entity);
+//		
+//
+//		
+//		commentService.save(entity);
+//		return new ModelAndView("forward:/posts/post", model);
+//		
+//	}
 	@PostMapping("cmtSave")
-	public ModelAndView cmtSave(ModelMap model, @Valid @ModelAttribute("cmtModel") CommentModel cmtModel, BindingResult result) {
+	public ResponseEntity<String> cmtSave(ModelMap model, @Valid @ModelAttribute("comment") CommentModel cmtModel, BindingResult result) {
 		
 		if(result.hasErrors()) {
-			return new ModelAndView("admin/post/Comment");
+			 return new ResponseEntity<>("Validation errors", HttpStatus.BAD_REQUEST);
 		}
 		Comments entity = new Comments();
 		BeanUtils.copyProperties(cmtModel, entity);
 		
-//		if(cmtModel.getUserid()!=null) {
-//			commentService.save(entity);
-//			return new ModelAndView("forward:/posts/post", model);
-//		}else {
-//			commentService.save(entity);
-//			return new ModelAndView("forward:/posts/post", model);
-//		}
-		
-		commentService.save(entity);
-		return new ModelAndView("forward:/posts/post", model);
-		
+		if(cmtModel.getCmtid()!=null) {
+			commentService.save(entity);
+		} else {
+			commentService.save(entity);
+			return new ResponseEntity<String>("Comment saved successfully",HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("Comment saved successfully",HttpStatus.OK);
+		//return new ModelAndView("forward:/posts/post", model);
 	}
 	
+//	@GetMapping("editCmt/{cmtid}/{userid}")
+//	public ResponseEntity<Void> editCmt(ModelMap model, @PathVariable("cmtid") Long cmtid,  @PathVariable("userid") int userid ) {
+//		
+//		
+//		Optional<Comments> optCmt = commentService.findById(cmtid);
+//		CommentModel commentModel = new CommentModel();
+//		PostModel postModel = new PostModel();
+//		
+//		User user = userService.getCurrentUserById(userid);
+//		if (optCmt.isPresent()) {
+//			Comments entity = optCmt.get();
+//			Post post = entity.getPostid();
+//			BeanUtils.copyProperties(entity, commentModel);
+//			BeanUtils.copyProperties(post, postModel);
+//			commentModel.setIsEdit(true);
+//			commentModel.setUserid(user);
+//			model.addAttribute("cmtModel", commentModel);
+//			model.addAttribute("user", user);
+//			model.addAttribute("cmtid", cmtid);
+//			model.addAttribute("post", postModel);
+//			model.addAttribute("cmtDate", commentModel.getCmtDate());
+//			//commentService.deleteById(cmtid);
+//			return new ResponseEntity<>(HttpStatus.OK);
+//		}
+//		
+//		model.addAttribute("message", "Comment is not existed.");
+//		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//	}
+	
 	@GetMapping("editCmt/{cmtid}/{userid}")
-	public ModelAndView editCmt(ModelMap model, @PathVariable("cmtid") int cmtid,  @PathVariable("userid") int userid ) {
-		
+	public ModelAndView editCmt(ModelMap model, @PathVariable("cmtid") Long cmtid,  @PathVariable("userid") int userid ) {
 		
 		Optional<Comments> optCmt = commentService.findById(cmtid);
-		
-		//Optional<Comments> optCmt = postService.getCommentsByCmtId(cmtid);
 		CommentModel commentModel = new CommentModel();
 		PostModel postModel = new PostModel();
 		
@@ -186,10 +224,9 @@ public class PostController {
 			commentModel.setUserid(user);
 			model.addAttribute("cmtModel", commentModel);
 			model.addAttribute("user", user);
-			model.addAttribute("cmtid", cmtid);
+			//model.addAttribute("content", commentModel.getContent());
 			model.addAttribute("post", postModel);
-			model.addAttribute("cmtDate", commentModel.getCmtDate());
-			commentService.deleteById(cmtid);
+			//commentService.deleteById(cmtid);
 			return new ModelAndView("admin/post/EditComment", model);
 		}
 		
@@ -198,7 +235,7 @@ public class PostController {
 	}
 	
 	@DeleteMapping("cmtdelete/{cmtid}/{userid}")
-	public ResponseEntity<Void> deleteComment(@PathVariable("cmtid") int cmtid, @PathVariable("userid") int userid) {
+	public ResponseEntity<Void> deleteComment(@PathVariable("cmtid") Long cmtid, @PathVariable("userid") int userid) {
 		User user = userService.getCurrentUserById(userid);
 		
 	    Optional<Comments> optCmt = commentService.findById(cmtid);

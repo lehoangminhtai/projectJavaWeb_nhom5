@@ -125,7 +125,7 @@ input[type="text"] {
 		</div>
 
 	</nav>
-	<div style="height: 3px;"></div>
+	<div style="height: 0px;"></div>
 	<link
 		href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
 		rel="stylesheet"

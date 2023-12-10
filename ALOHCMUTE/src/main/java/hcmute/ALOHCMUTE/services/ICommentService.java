@@ -8,8 +8,8 @@ public interface ICommentService {
 
 	<S extends Comments> S save(S entity);
 
-	Optional<Comments> findById(int cmtid);
+	Optional<Comments> findById(Long cmtid);
 
-	void deleteById(Integer id);
+	void deleteById(Long id);
 
 }

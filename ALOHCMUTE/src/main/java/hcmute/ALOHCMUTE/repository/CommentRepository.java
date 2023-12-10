@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import hcmute.ALOHCMUTE.entity.Comments;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comments, Integer> {
+public interface CommentRepository extends JpaRepository<Comments, Long> {
 
 }
