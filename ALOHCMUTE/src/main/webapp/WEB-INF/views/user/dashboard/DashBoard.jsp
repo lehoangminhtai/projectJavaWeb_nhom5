@@ -27,7 +27,6 @@
                 </div>
             </div>
         </div>
-
         <div class=""></div>
         <div class="row">
             <c:forEach var="i" items="${posts}">
