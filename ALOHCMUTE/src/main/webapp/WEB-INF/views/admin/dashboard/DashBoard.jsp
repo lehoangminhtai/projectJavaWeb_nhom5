@@ -9,6 +9,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body style="background: url(https://i.pinimg.com/564x/8b/b4/33/8bb433233a9176ea6cb01298f18a0035.jpg) center center/cover">
+	
 	<h1 class="text-center" style ="color:white; margin-bottom: 50px;"> <u> Dash Board ADMIN</u> <i class='bx bxs-bar-chart-alt-2' style='color:#ffffff' ></i></h1>
 	
 	<div class= "d-flex align-items-center justify-content-evenly ">
@@ -44,7 +45,13 @@
                 <div class="col-md-4 mb-4">
                     <div class="card" style="background-color: #77CDF2">
                         <div class="card-body">
-                            <h5 class="card-title"style="color: white">Post ID: ${i.postid}</h5>
+                        	<c:forEach var="user" items="${userTopLike}">
+								<c:if test="${i.userid.userid == user.key}">
+									<h4>User: @<i style="color: white">${user.value}</i></h4>
+								</c:if>
+							</c:forEach>
+							<hr>
+                            <h5 class="card-title" >Post ID:<i style="color: white"> ${i.postid}</i></h5>
                             <p class="card-text small" style="margin-top: -10px">Last update: ${i.postDate}</p>
                             <p class="card-text">${i.content}</p>
                             <img src="/posts/post/images/${i.media}" class="img-fluid mb-1 w-65" >
@@ -73,7 +80,13 @@
                 <div class="col-md-4 mb-4">
                     <div class="card" style="background-color: #77CDF2">
                         <div class="card-body">
-                            <h5 class="card-title"style="color: white">Post ID: ${i.postid}</h5>
+							<c:forEach var="user" items="${userTopCmt}">
+								<c:if test="${i.userid.userid == user.key}">
+									<h4>User: @<i style="color: white">${user.value}</i></h4>
+								</c:if>
+							</c:forEach>
+							<hr>
+                            <h5 class="card-title" >Post ID:<i style="color: white"> ${i.postid}</i></h5>
                             <p class="card-text small" style="margin-top: -10px">Last update: ${i.postDate}</p>
                             <p class="card-text">${i.content}</p>
                             <img src="/posts/post/images/${i.media}" class="img-fluid mb-1 w-65" >

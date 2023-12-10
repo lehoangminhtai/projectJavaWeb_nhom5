@@ -13,8 +13,11 @@
 </head>
 
 <body class="bg-light" style="background: url(https://i.pinimg.com/564x/8b/b4/33/8bb433233a9176ea6cb01298f18a0035.jpg) center center/cover">
+	<a href="/posts/post/exit/${user.userid}"  class="btn btn-primary" aria-label="close position-absolute top-0 end-0 m-2" style="top:-50px">
+							<span aria-hidden="true"><i class='bx bx-arrow-back' style='color:#ffffff'  ></i> Back Home</span>
+						</a>
     <div class="container mt-5">
-    <h1 class="text-center mt-4 mb-3"><i>Dashboard</i> <i class='bx bx-trending-up'></i></h1>
+    <h1 class="text-center mt-4 mb-3"><i>Dashboard</i> <i class='bx bxs-bar-chart-alt-2' style='color:#ffffff' ></i></h1>
     	<div class="d-flex justify-content-center align-items-center">
             <img alt="" <%-- src="/posts/post/images/${user.avatar}" --%> src="https://i.pinimg.com/564x/7c/00/3f/7c003f765d1cec42ae00100084b94daf.jpg" 
             	class="img-fluid mb-3 w-25 rounded-circle mr-3">

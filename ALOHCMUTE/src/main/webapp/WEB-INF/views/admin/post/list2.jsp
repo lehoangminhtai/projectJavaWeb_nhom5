@@ -24,7 +24,7 @@
 	<form action="<c:url value="/posts/post/dashboard/${userid}"/>" method="post">
 		<button type="submit" class="btn btn-primary">Thống kê</button>
 	</form>
-	<a href="posts/post/dashboard/${userid}">Thống kê</a>
+	
 <%-- 	<div class="h5 m-0">${user}</div> --%>
 	<%-- <div class="h5 m-0">${user.userName}</div> --%>
 	
