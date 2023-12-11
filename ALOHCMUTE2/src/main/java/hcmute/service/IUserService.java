@@ -29,4 +29,6 @@ public interface IUserService {
 	User getCurrentUser(String username);
 
 	User getCurrentUserById(Long userid);
+	
+	User registerNewUser(User user);
 }

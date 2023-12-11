@@ -17,4 +17,6 @@ public interface IFriendshipService {
 	List<Friendship> getFriendshipList2(Long user2, String status);
 
 	List<Friendship> getFriendshipList1(Long user1, String status);
+	
+	void removeFriend(Long userId1, Long userId2);
 }

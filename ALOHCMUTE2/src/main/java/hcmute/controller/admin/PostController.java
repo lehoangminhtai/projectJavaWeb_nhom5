@@ -113,12 +113,12 @@ public class PostController {
 	
 	@GetMapping("exit/{userid}")
 	public String userPost(ModelMap model,@PathVariable("userid") int userid) {
-		return "redirect:/posts/post?userid=" + userid;
+		return "redirect:/admin/alohcmute";
 	   }
 	
 	@PostMapping("comment/{postid}/{currentUser}/exit/{userid}")
 	public String userCmt(ModelMap model,@PathVariable("userid") int userid) {
-		return "redirect:/posts/post?userid=" + userid;
+		return "redirect:/admin/alohcmute";
 	   }
 	
 	@GetMapping("add/{userid}")

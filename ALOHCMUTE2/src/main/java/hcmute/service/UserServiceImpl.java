@@ -114,6 +114,11 @@ public class UserServiceImpl implements IUserService {
 	public User getCurrentUserById(Long userid) {
 		 return userRepository.getUserByUserID(userid);	 
 	 }
+
+	@Override
+	public User registerNewUser(User user) {
+		return userRepository.save(user);
+	}
     
     
 

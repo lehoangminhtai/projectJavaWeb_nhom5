@@ -43,4 +43,18 @@ public class FriendshipServiceImpl implements IFriendshipService{
         return friendshipRepository.findByUser1AndStatus( user1, status);
     }
 
+	@Override
+	public void removeFriend(Long userId1, Long userId2) {
+		// Assuming you have a method in the repository to find the friendship by user IDs
+        Friendship friendship = friendshipRepository.findByUser1AndUser2(userId1, userId2);
+
+        if (friendship != null) {
+            // Delete the friendship record from the database
+            friendshipRepository.delete(friendship);
+        }
+		
+	}
+
+
+
 }

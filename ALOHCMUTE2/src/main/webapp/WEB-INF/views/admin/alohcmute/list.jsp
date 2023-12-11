@@ -169,6 +169,7 @@ link rel ="stylesheet " href ="https: //cdnjs.cloudflare.com /ajax /libs
 	background-color: #0056b3;
 	color: #fff;
 }
+
 .profile-avatar {
 	width: 50px; /* Kích thước của avatar */
 	height: 50px;
@@ -229,13 +230,20 @@ link rel ="stylesheet " href ="https: //cdnjs.cloudflare.com /ajax /libs
 					sách nhóm</span>
 			</a>
 		</div>
-		
+
 		<div class="menu-item">
 			<a href="/user/dashboard/${userid }"> <i
-				class="fa fa-list-alt menu-icon"></i> <span class="menu-text">Thống kế User</span>
+				class="fa fa-list-alt menu-icon"></i> <span class="menu-text">Thống
+					kế User</span>
 			</a>
 		</div>
-		
+
+		<div class="menu-item">
+			<a href="/admin/alohcmute/listfriends/all"> <i
+				class="fa fa-user menu-icon"></i> <span class="menu-text">Danh
+					sách bạn bè</span>
+			</a>
+		</div>
 		<!--<div class="menu-item">
 			<i class="fa fa-video menu-icon"></i> <span class="menu-text">Video</span>
 		</div>
@@ -266,138 +274,118 @@ link rel ="stylesheet " href ="https: //cdnjs.cloudflare.com /ajax /libs
 	</div>
 
 	<div class="center-section">
-		<div class="col-md-6 gedf-main">
-			<!-- SUA DAY -->
-			<div class="card">
-				<div class="card-body">
-					<form>
-						<div class="form-group">
-							<a href="/posts/post/add/${userid}"> <textarea
-									class="form-control" rows="3"
-									placeholder="What's on your mind?"></textarea>
-							</a>
-						</div>
-						<a href="/posts/post/add/${userid}">
-							<div class="btn btn-primary">Post</div>
+		<!-- Post Creation Section -->
+		<div class="card mb-3">
+			<div class="card-body">
+				<form action="/posts/post/add/${userid}" method="post">
+					<div class="form-group">
+						<a href="/posts/post/add/${userid}"> <textarea
+								class="form-control" rows="3" placeholder="What's on your mind?"></textarea>
 						</a>
-					</form>
+					</div>
+					<a href="/posts/post/add/${userid}">
+						<div class="btn btn-primary">Post</div>
+					</a>
+				</form>
+			</div>
+		</div>
+
+		<!-- Main Content to Display Posts -->
+		<c:forEach var="post" items="${post}">
+			<div class="card gedf-card mb-3">
+				<div class="card-header">
+					<div class="d-flex justify-content-between align-items-center">
+						<div class="d-flex align-items-center">
+							<div class="mr-2">
+								<!-- Avatar -->
+								<c:forEach var="userEntry" items="${user2}">
+									<c:if test="${post.userid.userId == userEntry.key}">
+										<img
+											src="<c:url value='/admin/alohcmute/images/${userEntry.value}'/>"
+											class="rounded-circle" alt="Avatar"
+											style="width: 40px; height: 40px;">
+									</c:if>
+								</c:forEach>
+							</div>
+							<div class="ml-2">
+								<!-- Username and Post Date -->
+								<c:forEach var="userEntry" items="${user}">
+									<c:if test="${post.userid.userId == userEntry.key}">
+										<c:set var="currentUser" value="${userEntry.key}"
+											scope="request" />
+										<div class="h5 m-0">${userEntry.value}</div>
+										<div class="h7 text-muted">${post.postDate}</div>
+									</c:if>
+								</c:forEach>
+								<div>
+									<!-- Access Modifier -->
+									<c:if test="${post.access_modifier == 0}">
+										<div class="text-muted small">
+											<i class="fa fa-globe"></i> Public
+										</div>
+									</c:if>
+									<c:if test="${post.access_modifier == 1}">
+										<div class="text-muted small">
+											<i class="fa fa-users"></i> Friends
+										</div>
+									</c:if>
+									<c:if test="${post.access_modifier == 2}">
+										<div class="text-muted small">
+											<i class="fa fa-user"></i> Just me
+										</div>
+									</c:if>
+								</div>
+							</div>
+						</div>
+						<div>
+							<!-- Dropdown for Post Configuration -->
+							<div class="dropdown">
+								<button class="btn btn-link" type="button" id="gedf-drop1"
+									data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false">
+									<i class="fa fa-ellipsis-h"></i>
+								</button>
+								<div class="dropdown-menu dropdown-menu-right"
+									aria-labelledby="gedf-drop1">
+									<div class="h6 dropdown-header">Configuration</div>
+									<a class="dropdown-item" href="#">Save</a>
+									<c:if test="${userid == currentUser}">
+										<a class="dropdown-item"
+											href="/posts/post/edit/${post.postid}/${userid}">Update</a>
+										<a class="dropdown-item"
+											href="/admin/alohcmute/delete/${post.postid}/${userid}">Delete</a>
+									</c:if>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<!-- Post Content -->
+					<p class="card-text">${post.content}</p>
+					<!-- Post Image -->
+					<c:if test="${post.media != null}">
+						<img src="/posts/post/images/${post.media}" class="img-fluid">
+					</c:if>
+				</div>
+				<div class="card-footer">
+					<!-- Like, Comment, Share Buttons -->
+					<c:forEach var="likeCount" items="${likeCount}">
+						<c:if test="${post.postid == likeCount.key}">
+							<a href="javascript:void(0)"
+								onclick="checkAndLike(${post.postid}, ${userid});"
+								class="card-link"> <i class="fa fa-thumbs-up"></i> <span
+								id="likeCountElement">${likeCount.value}</span> Like
+							</a>
+						</c:if>
+					</c:forEach>
+					<a
+						href="/posts/post/comment/${post.postid}/${currentUser}/${userid}"
+						class="card-link"><i class="fa fa-comment"></i> Comment</a> <a
+						href="#" class="card-link"><i class="fa fa-share"></i> Share</a>
 				</div>
 			</div>
-			<!-- SUA DAY -->
-			<!-- Main content hiển thị bài viết -->
-			<c:forEach var="post" items="${post}">
-				<div class="card gedf-card">
-					<div class="card-header">
-						<div class="d-flex justify-content-between align-items-center">
-							<div class="d-flex justify-content-between align-items-center">
-								<div class="mr-2">
-									<!-- Avatar sửa ở đây -->
-
-
-									<c:forEach var="userEntry" items="${user2}">
-										<c:if test="${post.userid.userId == userEntry.key}">
-											<div class="profile-avatar">
-												<c:choose>
-													<c:when test="${not empty userEntry.value}">
-														<img
-															src="<c:url value='/admin/alohcmute/images/${userEntry.value}'/>"
-															class="img-fluid rounded-circle" alt="Avatar">
-													</c:when>
-													<c:otherwise>
-														<p>No icon available.</p>
-													</c:otherwise>
-												</c:choose>
-											</div>
-
-
-										</c:if>
-									</c:forEach>
-								</div>
-
-								<div class="ml-2">
-									<!-- Username sửa ở đây -->
-									<c:forEach var="userEntry" items="${user}">
-										<c:if test="${post.userid.userId == userEntry.key}">
-											<c:set var="currentUser" value="${userEntry.key}"
-												scope="request" />
-											<div class="h5 m-0">${userEntry.value}</div>
-										</c:if>
-									</c:forEach>
-									<%-- <div class="h5 m-0">${user.value[0]}</div> --%>
-									<div>
-										<div class="h7 text-muted">${post.postDate}</div>
-										<c:if test="${post.access_modifier == 0}">
-											<div class="h7 text-muted">
-												<i class="fa fa-globe"></i> Public
-											</div>
-										</c:if>
-										<c:if test="${post.access_modifier == 1}">
-											<div class="h7 text-muted">
-												<i class="fa fa-users"></i> Friends
-											</div>
-										</c:if>
-										<c:if test="${post.access_modifier == 2}">
-											<div class="h7 text-muted">
-												<i class="fa fa-user"></i> Just me
-											</div>
-										</c:if>
-									</div>
-
-								</div>
-							</div>
-							<div>
-								<div class="dropdown">
-									<button class="btn btn-link dropdown-toggle" type="button"
-										id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="false">
-										<i class="fa fa-ellipsis-h"></i>
-									</button>
-									<div class="dropdown-menu dropdown-menu-right"
-										aria-labelledby="gedf-drop1">
-										<div class="h6 dropdown-header">Configuration</div>
-										<a class="dropdown-item" href="#">Save</a>
-										<c:if test="${userid == currentUser}">
-											<a class="dropdown-item"
-												href="/posts/post/edit/${post.postid}/${userid}">Update</a>
-											<a class="dropdown-item"
-												href="/admin/alohcmute/delete/${post.postid}/${userid}">Delete</a>
-										</c:if>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="card-body">
-						<!-- Nội dung post ở đây -->
-						<p class="card-text">${post.content}</p>
-						<br>
-
-						<!-- Hình ảnh post ở đây -->
-						<c:if test="${post.media != null}">
-							<img src="/posts/post/images/${post.media}" class="img-fluid">
-						</c:if>
-
-					</div>
-					<div class="card-footer">
-						<c:forEach var="likeCount" items="${likeCount}">
-							<c:if test="${post.postid == likeCount.key}">
-
-								<a href="javascript:void(0)"
-									onclick="checkAndLike(${post.postid}, ${userid});"
-									class="card-link1"><i class="fa fa-gittip"></i> <label
-									id="likeCountElement">${likeCount.value}</label> Like</a>
-							</c:if>
-						</c:forEach>
-
-						<a
-							href="/posts/post/comment/${post.postid}/${currentUser}/${userid}"
-							class="card-link"><i class="fa fa-comment"></i> Comment</a> <a
-							href="#" class="card-link"><i class="fa fa-mail-forward"></i>
-							Share</a>
-					</div>
-				</div>
-			</c:forEach>
-		</div>
+		</c:forEach>
 	</div>
 
 	<div class="right-section">
@@ -501,4 +489,3 @@ link rel ="stylesheet " href ="https: //cdnjs.cloudflare.com /ajax /libs
         });
     }
 	</script>
-
