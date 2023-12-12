@@ -193,6 +193,8 @@ public class CategoryController {
 			return "admin/alohcmute/login";
 		}
 
+		int numbersOfFriend = user.size();
+		model.addAttribute("countFriend", numbersOfFriend);
 		model.addAttribute("listfriends", user);
 
 		List<User> usersuggestion = userService.findAll();

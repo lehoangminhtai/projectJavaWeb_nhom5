@@ -48,7 +48,7 @@
 						Like Total:<i> ${numLike}</i>
 					</h5>
 					<h5 style="color: #A1A043; font-family: serif;">
-						Follower:<i> ${numLike}</i>
+						Follower:<i> ${countFriends}</i>
 					</h5>
 				</div>
 			</div>

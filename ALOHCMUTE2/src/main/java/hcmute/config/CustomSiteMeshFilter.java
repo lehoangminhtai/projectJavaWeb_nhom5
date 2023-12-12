@@ -19,6 +19,8 @@ public class CustomSiteMeshFilter extends ConfigurableSiteMeshFilter{
 				// Exclude few paths from decoration.
 
 				.addExcludedPath("/login*").addExcludedPath("/login/*")
+				
+				.addExcludedPath("/register*").addExcludedPath("/register/*")
 
 				.addExcludedPath("/alogin*").addExcludedPath("/alogin/*")
 

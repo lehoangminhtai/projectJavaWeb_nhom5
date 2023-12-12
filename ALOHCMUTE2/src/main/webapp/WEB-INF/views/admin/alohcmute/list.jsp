@@ -232,7 +232,7 @@ link rel ="stylesheet " href ="https: //cdnjs.cloudflare.com /ajax /libs
 		</div>
 
 		<div class="menu-item">
-			<a href="/user/dashboard/${userid }"> <i
+			<a href="/user/dashboard/${userid }?countFriend=${countFriend}"> <i
 				class="fa fa-list-alt menu-icon"></i> <span class="menu-text">Thống
 					kế User</span>
 			</a>

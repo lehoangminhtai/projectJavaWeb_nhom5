@@ -36,7 +36,7 @@ public class User_Dashboard {
 	IUserService userService;
 	
 	@GetMapping("{userid}")
-	public String list(ModelMap model,@PathVariable("userid") Long userid) {
+	public String list(ModelMap model,@PathVariable("userid") Long userid, @RequestParam int countFriend) {
 		User user = userService.getCurrentUserById(userid);
 		model.addAttribute("user", user);
 		
@@ -62,6 +62,7 @@ public class User_Dashboard {
 		 
 		model.addAttribute("cmtcount", commentCountMap);
 		model.addAttribute("likecount", likeCountMap);
+		model.addAttribute("countFriends", countFriend);
 		return "user/dashboard/DashBoard";
 	}
 }
