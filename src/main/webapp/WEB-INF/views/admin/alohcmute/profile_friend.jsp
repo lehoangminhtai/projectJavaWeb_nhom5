@@ -87,6 +87,9 @@
 					<p>Tình Trạng Mối Quan Hệ: ${user.relationshipStatus}</p>
 					<p>Nghề Nghiệp: ${user.job}</p>
 					<p>Giáo Dục: ${user.education}</p>
+					<a class="btn btn-primary btn-add-friend"
+					href="/admin/alohcmute/profile/addfriends/${user.userId }">Add
+					Friend</a>
 				</div>
 			</div>
 		</div>

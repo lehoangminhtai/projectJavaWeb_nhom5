@@ -1,28 +1,24 @@
 package hcmute.model;
 
-import java.time.LocalDateTime;
+
+import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import hcmute.entity.User;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostModel {
-	private Long postId;
-
-    private UserModel user;
-
-    private String content;
-
-    private String imageUrl;
-
-    private LocalDateTime timestamp;
-
-    private MultipartFile imageFile;
-
-    private Boolean isEdit = false;
+	private Long postid;
+	private User userid;
+	private String content;
+	private String media;
+	private int access_modifier;
+	private Date datePost;
+	private Boolean isEdit = false;
+	private Boolean isLiked = false;
+	private MultipartFile imageFile;	
 }

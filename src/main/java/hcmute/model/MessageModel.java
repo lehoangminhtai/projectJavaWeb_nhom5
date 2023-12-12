@@ -1,10 +1,7 @@
 package hcmute.model;
 
 import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -12,9 +9,9 @@ import lombok.NoArgsConstructor;
 public class MessageModel {
 	private Long messageId;
 
-    private UserModel sender;
+    private Long sender;
 
-    private UserModel receiver;
+    private Long receiver;
 
     private String content;
 

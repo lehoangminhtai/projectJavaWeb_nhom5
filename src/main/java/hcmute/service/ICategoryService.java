@@ -1,16 +1,14 @@
 package hcmute.service;
-
+import hcmute.entity.Category;
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
-import hcmute.entity.Category;
-
-@Service
 public interface ICategoryService {
 	void deleteAll();
 

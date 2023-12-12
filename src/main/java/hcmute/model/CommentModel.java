@@ -1,24 +1,20 @@
 package hcmute.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import hcmute.entity.Post;
+import hcmute.entity.User;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentModel {
-	private Long commentId;
-
-    private PostModel post;
-
-    private UserModel user;
-
-    private String content;
-
-    private LocalDateTime timestamp;
-
-    private Boolean isEdit = false;
+	private Long cmtid;
+	private User userid;
+	private Post postid;
+	private Date cmtDate;
+	private String content;
+	
+	private Boolean isEdit= false;
 }

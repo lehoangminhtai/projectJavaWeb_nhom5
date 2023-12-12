@@ -1,15 +1,16 @@
 package hcmute.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import hcmute.entity.Likes;
+import hcmute.entity.Post;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -48,6 +49,10 @@ public class UserModel {
 	private String job;
 
 	private String education;
+	
+    private List<Post> posts;
+    
+    private List<Likes> userLikes;
 
 	private MultipartFile avatarFile;
 

@@ -1,6 +1,9 @@
 package hcmute.controller.admin;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,9 +32,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import hcmute.entity.Category;
+import hcmute.entity.Friendship;
+import hcmute.entity.Post;
+import hcmute.entity.User;
 import hcmute.model.CategoryModel;
 import hcmute.service.ICategoryService;
+import hcmute.service.ICommentService;
+import hcmute.service.IFriendshipService;
+import hcmute.service.ILikeService;
+import hcmute.service.IPostService;
+import hcmute.service.ISearchService;
 import hcmute.service.IStorageService;
+import hcmute.service.IUserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -41,9 +54,27 @@ public class CategoryController {
 	@Autowired(required = true)
 
 	ICategoryService categoryService;
-	
+
 	@Autowired
 	IStorageService storageService;
+
+	@Autowired
+	IUserService userService;
+
+	@Autowired
+	IFriendshipService friendshipService;
+
+	@Autowired
+	ISearchService searchService;
+
+	@Autowired
+	IPostService postService;
+
+	@Autowired
+	ICommentService commentService;
+
+	@Autowired
+	ILikeService likeService;
 
 	@GetMapping("add")
 
@@ -78,10 +109,10 @@ public class CategoryController {
 		// copy từ Model sang Entity
 
 		BeanUtils.copyProperties(cateMdoel, entity);
-		if(!cateMdoel.getImageFile().isEmpty()) {
+		if (!cateMdoel.getImageFile().isEmpty()) {
 			UUID uuid = UUID.randomUUID();
 			String uuString = uuid.toString();
-			
+
 			entity.setIcon(storageService.getStorageFilename(cateMdoel.getImageFile(), uuString));
 			storageService.store(cateMdoel.getImageFile(), entity.getIcon());
 		}
@@ -114,7 +145,7 @@ public class CategoryController {
 
 	@RequestMapping("")
 
-	public String list(ModelMap model) {
+	public String list(ModelMap model, HttpSession session) {
 
 		// gọi hàm findAll() trong service
 
@@ -124,6 +155,100 @@ public class CategoryController {
 
 		model.addAttribute("categories", list);
 
+		List<User> user = new ArrayList<User>();
+		if (session.getAttribute("user") != null) {
+			String status = "Accepted";
+			User loggedInUser = (User) session.getAttribute("user");
+			User userFromDatabase = userService.findByUsername(loggedInUser.getUsername());
+			Long UserID2 = userFromDatabase.getUserId();
+			List<Friendship> fships = friendshipService.getFriendshipList2(UserID2, status);
+			for (Friendship friendship : fships) {
+				List<User> user1 = searchService.findUsersByUserId(friendship.getUser1());
+				for (User US : user1) {
+					user.add(US);
+				}
+			}
+			List<Friendship> fships2 = friendshipService.getFriendshipList1(UserID2, status);
+			for (Friendship friendship : fships2) {
+				List<User> user2 = searchService.findUsersByUserId(friendship.getUser2());
+				for (User US : user2) {
+					user.add(US);
+				}
+			}
+		} else {
+			return "admin/alohcmute/login";
+		}
+
+		int numbersOfFriend = user.size();
+		model.addAttribute("countFriend", numbersOfFriend);
+		model.addAttribute("listfriends", user);
+
+		List<User> usersuggestion = userService.findAll();
+		List<User> usersToKeep = new ArrayList<>();
+		for (User usertest : usersuggestion) {
+			Long UserID1 = usertest.getUserId();
+			Long UserID2;
+			if (session.getAttribute("user") != null) {
+				User loggedInUser = (User) session.getAttribute("user");
+				User userFromDatabase = userService.findByUsername(loggedInUser.getUsername());
+				UserID2 = userFromDatabase.getUserId();
+			} else {
+				return "admin/alohcmute/login";
+			}
+			List<Friendship> checkFriendShip1 = friendshipService.findFriendshipsByUser1AndUser2(UserID1, UserID2);
+			List<Friendship> checkFriendShip2 = friendshipService.findFriendshipsByUser1AndUser2(UserID2, UserID1);
+			if (checkFriendShip1.isEmpty() && checkFriendShip2.isEmpty()) {
+				usersToKeep.add(usertest);
+			}
+		}
+		usersuggestion = usersToKeep;
+
+		Long userid;
+		if (session.getAttribute("user") != null) {
+			User loggedInUser = (User) session.getAttribute("user");
+			User userFromDatabase = userService.findByUsername(loggedInUser.getUsername());
+			userid = userFromDatabase.getUserId();
+
+		} else {
+			return "admin/alohcmute/login";
+		}
+
+		List<Post> posts = postService.findAllByOrderByPostDateDesc();
+
+		// Create a map to store user names by user ID
+		Map<Long, String> userNameMap = new HashMap<>();
+		Map<Long, String> userImageMap = new HashMap<>();
+		Map<Long, Integer> likeCountMap = new HashMap<>();
+		for (Post post : posts) {
+			Long postId = post.getPostid();
+			int likeCount = likeService.countLikesByPostId(post);
+			likeCountMap.put(postId, likeCount);
+		}
+
+		// Fetch usernames for each post's userid
+		for (Post post : posts) {
+			Long userId = post.getUserid().getUserId();
+			Optional<User> optUser = userService.findById(userId);
+			User userName = optUser.get();
+			User userImage = optUser.get();
+			// DOI FULL NAME Ơ DAYYYYYYYY
+			String name = userName.getFullName();
+			String image = userImage.getAvatar();
+			userNameMap.put(userId, name);
+			userImageMap.put(userId, image);
+		}
+
+		
+		// Add posts and username map to the model
+		
+		model.addAttribute("post", posts);
+		model.addAttribute("user", userNameMap);
+		model.addAttribute("user2", userImageMap);
+
+		// ===================================
+		model.addAttribute("userid", userid);
+		model.addAttribute("likeCount", likeCountMap);
+		model.addAttribute("usersuggestion", usersuggestion);
 		return "admin/alohcmute/list";
 
 	}
@@ -263,11 +388,33 @@ public class CategoryController {
 		return "admin/alohcmute/searchpaginated";
 
 	}
+	
+	@GetMapping("delete/{postid}/{userid}")
+	public ModelAndView deletePost(ModelMap model, @PathVariable("postid") Long postid, @PathVariable("userid") Long userid) {
+	    User user = userService.getCurrentUserById(userid);
+	    Optional<Post> optPost = postService.findById(postid);
+	    postService.deleteById(postid);
+	    if (optPost.isPresent()) {
+	        Post post = optPost.get();
+	        if (post.getUserid() == user) { // Kiểm tra xem người dùng có phải là chủ sở hữu của bài viết hay không
+	        	postService.deletePost(postid);
+	            model.addAttribute("message", "Post is deleted.");
+	        } else {
+	            model.addAttribute("message", "You are not authorized to delete this post.");
+	        }
+	    } else {
+	        model.addAttribute("message", "Post is not existed.");
+	    }
+
+	    return new ModelAndView("redirect:/admin/alohcmute");
+	}
+
 	@GetMapping("/images/{filename:.+}")
 	@ResponseBody
-	public ResponseEntity<Resource> serverFile(@PathVariable String filename){
+	public ResponseEntity<Resource> serverFile(@PathVariable String filename) {
 		Resource file = storageService.loadAsResource(filename);
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment;filename=\"" + file.getFilename() + "\"").body(file);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + file.getFilename() + "\"")
+				.body(file);
 	}
 }

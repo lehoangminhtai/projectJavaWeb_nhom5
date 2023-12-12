@@ -105,7 +105,20 @@ public class UserServiceImpl implements IUserService {
 		userRepository.deleteAll();
 	}
 
-    
+	@Override
+	public User getCurrentUser(String username) {
+		 return userRepository.getUserByUsername(username);
+	 }
+	
+	@Override
+	public User getCurrentUserById(Long userid) {
+		 return userRepository.getUserByUserID(userid);	 
+	 }
+
+	@Override
+	public User registerNewUser(User user) {
+		return userRepository.save(user);
+	}
     
     
 

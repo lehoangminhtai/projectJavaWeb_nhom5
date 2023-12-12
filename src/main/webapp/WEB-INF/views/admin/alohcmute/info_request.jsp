@@ -82,6 +82,7 @@
 
             <div class="friend-actions">
                 <a class="btn btn-primary btn-add-friend" href="/admin/alohcmute/profile/acceptfriend/${user.userId }">Chấp nhận</a>
+                <a class="btn btn-primary btn-add-friend" href="/admin/alohcmute/profile/rejectedfriend/${user.userId }">Từ chối</a>
                 <a class="btn btn-primary btn-add-friend" href="/admin/alohcmute/profile/friends/${user.username }">Trang
 								cá nhân</a>
                 <!-- Thêm các nút hoặc hành động khác tùy thuộc vào yêu cầu -->

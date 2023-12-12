@@ -1,5 +1,7 @@
 package hcmute.service;
 
+
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,4 +26,9 @@ public interface IUserService {
 	List<User> findAll(Sort sort);
 	Page<User> findAll(Pageable pageable);
 	List<User> findAll();
+	User getCurrentUser(String username);
+
+	User getCurrentUserById(Long userid);
+	
+	User registerNewUser(User user);
 }

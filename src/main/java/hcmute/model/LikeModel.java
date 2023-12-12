@@ -1,22 +1,17 @@
 package hcmute.model;
 
-import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class LikeModel {
-	private Long likeId;
-
+	private int likeid;
+    private UserModel user;
     private PostModel post;
 
-    private UserModel user;
-
-    private LocalDateTime timestamp;
-
-    private Boolean isEdit = false;
+    @Override
+    public String toString() {
+        return "LikeModel [likeid=" + likeid + ", user=" + user + ", post=" + post + "]";
+    }
 }
